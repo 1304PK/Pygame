@@ -8,7 +8,8 @@ screen = pygame.display.set_mode((width, height))
 ballx = width/2
 bally = height/2
 paddlevel = 10
-vel = 10
+velx = 5
+vely = 5
 run = False
 
 # rect = pygame.Rect(0, 0, 118, 30)
@@ -20,8 +21,14 @@ for row in range(0, 8):
 
     
 paddle = pygame.Rect(0, height-20, 120, 20)
+ball = pygame.Rect(width/2-10, height/2-10, 20, 20)
 
-
+def collision():
+    global velx, vely
+    if paddle.colliderect(ball) or ball.y < 0 or ball.y > height - 10:
+        vely *= -1
+    elif ball.x < 0 or ball.x > width-10:
+        velx *= -1
 
 clock = pygame.time.Clock()
 running = True
@@ -42,14 +49,16 @@ while running:
         paddle.x += paddlevel
 
     if run:
-        ballx += vel
-        bally += vel
+        ball.x += velx
+        ball.y += vely
+        collision()
 
     screen.fill((0, 0, 0))
     for rect in rects:
         pygame.draw.rect(screen, (255, 255, 255), rect)
     pygame.draw.rect(screen, (255, 255, 255), paddle)
-    pygame.draw.circle(screen, (255, 255, 255), (ballx, bally), 10)
+    pygame.draw.circle(screen, (255, 255, 255), ball.center, 10)
+    pygame.draw.rect(screen, (255, 0, 0), ball, 1)
     pygame.display.flip()
 
 pygame.quit()

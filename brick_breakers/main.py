@@ -12,9 +12,12 @@ velx = 5
 vely = 5
 run = False
 
+winStatement = pygame.transform.scale(pygame.image.load('brick_breakers/Assets/win.png'), (462, 264))
+winStatement_rect = winStatement.get_rect(topleft = (width/2 - 231, 305))
+
 # rect = pygame.Rect(0, 0, 118, 30)
 rects = []
-for row in range(0, 3):
+for row in range(0, 1):
     for column in range(0, width, 120):
         rect = pygame.Rect(column, 30*row, 118, 28)
         rects.append(rect)
@@ -39,13 +42,11 @@ def collision():
             vely *= -1
             rects.remove(rect)
         
-    if len(rects) == 0:
-        print('you win')
 
 clock = pygame.time.Clock()
 running = True
 while running:
-    clock.tick(60)
+    # clock.tick(180)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -70,6 +71,10 @@ while running:
         pygame.draw.rect(screen, (255, 255, 255), rect)
     pygame.draw.rect(screen, (255, 255, 255), paddle)
     pygame.draw.circle(screen, (255, 255, 255), ball.center, 10)
+    if len(rects) == 0:
+        screen.blit(winStatement, winStatement_rect)
+        velx, vely = 0, 0
+    
     # pygame.draw.rect(screen, (255, 0, 0), ball, 1)
     pygame.display.flip()
 

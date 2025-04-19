@@ -14,7 +14,7 @@ run = False
 
 # rect = pygame.Rect(0, 0, 118, 30)
 rects = []
-for row in range(0, 8):
+for row in range(0, 1):
     for column in range(0, width, 120):
         rect = pygame.Rect(column, 30*row, 118, 28)
         rects.append(rect)
@@ -24,11 +24,19 @@ paddle = pygame.Rect(0, height-20, 120, 20)
 ball = pygame.Rect(width/2-10, height/2-10, 20, 20)
 
 def collision():
-    global velx, vely
+    global velx, vely, rects
     if paddle.colliderect(ball) or ball.y < 0 or ball.y > height - 10:
         vely *= -1
     elif ball.x < 0 or ball.x > width-10:
         velx *= -1
+
+    for rect in rects:
+        if ball.colliderect(rect):
+            vely *= -1
+            rects.remove(rect)
+        
+    if len(rects) == 0:
+        print('you win')
 
 clock = pygame.time.Clock()
 running = True

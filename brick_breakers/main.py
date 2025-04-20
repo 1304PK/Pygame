@@ -11,13 +11,16 @@ paddlevel = 10
 velx = 5
 vely = 5
 run = False
+font = pygame.font.SysFont('Arial', 30)
+score = 0
 
 winStatement = pygame.transform.scale(pygame.image.load('brick_breakers/Assets/win.png'), (462, 264))
 winStatement_rect = winStatement.get_rect(topleft = (width/2 - 231, 305))
 
+
 # rect = pygame.Rect(0, 0, 118, 30)
 rects = []
-for row in range(0, 1):
+for row in range(2, 3):
     for column in range(0, width, 120):
         rect = pygame.Rect(column, 30*row, 118, 28)
         rects.append(rect)
@@ -27,8 +30,9 @@ paddle = pygame.Rect(0, height-20, 120, 20)
 ball = pygame.Rect(width/2-10, height/2-10, 20, 20)
 
 def collision():
-    global velx, vely, rects
-    if paddle.colliderect(ball) or ball.y < 2 or ball.y > height - 22:
+    global velx, vely, rects, score
+    
+    if paddle.colliderect(ball) or ball.y < 62 or ball.y > height - 22:
         vely *= -1
     elif ball.x < 2 or ball.x > width-22:
         velx *= -1
@@ -40,6 +44,8 @@ def collision():
             elif velx < 0 and ball.bottom < rect.bottom:
                 velx *= -1
             vely *= -1
+            score += 1
+            print(score)
             rects.remove(rect)
         
 
@@ -47,6 +53,7 @@ clock = pygame.time.Clock()
 running = True
 while running:
     # clock.tick(180)
+    score_text = font.render(f"Score: {score}", True, (255, 255, 255))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -71,6 +78,8 @@ while running:
         pygame.draw.rect(screen, (255, 255, 255), rect)
     pygame.draw.rect(screen, (255, 255, 255), paddle)
     pygame.draw.circle(screen, (255, 255, 255), ball.center, 10)
+    pygame.draw.line(screen, (255, 255, 255), (0, 60), (width, 60))
+    screen.blit(score_text, (0, 12))
     if len(rects) == 0:
         screen.blit(winStatement, winStatement_rect)
         velx, vely = 0, 0

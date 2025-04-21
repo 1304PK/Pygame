@@ -19,14 +19,17 @@ winStatement_rect = winStatement.get_rect(topleft = (width/2 - 231, 305))
 
 
 # rect = pygame.Rect(0, 0, 118, 30)
+brick = pygame.transform.scale(pygame.image.load("brick_breakers/Assets/brick.jpg"), (118, 40))
 rects = []
-for row in range(2, 3):
+for row in range(2, 5):
     for column in range(0, width, 120):
-        rect = pygame.Rect(column, 30*row, 118, 28)
+        # rect = pygame.Rect(column, 30*row, 118, 28)
+        rect = brick.get_rect(topleft = (column, 42*row))
         rects.append(rect)
 
-    
-paddle = pygame.Rect(0, height-20, 120, 20)
+paddle_img = pygame.image.load("brick_breakers/Assets/paddle.jpg")
+paddle = paddle_img.get_rect(topleft = (0, height - 12))
+# paddle = pygame.Rect(0, height-20, 120, 20)
 ball = pygame.Rect(width/2-10, height/2-10, 20, 20)
 
 def updateScore():
@@ -60,7 +63,7 @@ clock = pygame.time.Clock()
 running = True
 
 while running:
-    # clock.tick(180)
+    clock.tick(30)
     score_text = font.render(f"Score: {score}", True, (255, 255, 255))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -71,9 +74,9 @@ while running:
                 run = True
 
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_a] and paddle.x >= 0:
+    if keys[pygame.K_a] and paddle.x >= 3:
         paddle.x -= paddlevel
-    elif keys[pygame.K_d] and paddle.x <= width-120:
+    elif keys[pygame.K_d] and paddle.x <= width-122:
         paddle.x += paddlevel
 
     if run:
@@ -81,10 +84,12 @@ while running:
         ball.y += vely
         collision()
 
-    screen.fill((0, 0, 0))
+    screen.fill((37, 32, 41))
     for rect in rects:
-        pygame.draw.rect(screen, (255, 255, 255), rect)
-    pygame.draw.rect(screen, (255, 255, 255), paddle)
+        # pygame.draw.rect(screen, (255, 255, 255), rect)
+        screen.blit(brick, rect)
+    # pygame.draw.rect(screen, (255, 255, 255), paddle)
+    screen.blit(paddle_img, paddle)
     pygame.draw.circle(screen, (255, 255, 255), ball.center, 10)
     pygame.draw.line(screen, (255, 255, 255), (0, 60), (width, 60))
     screen.blit(score_text, (0, 12))

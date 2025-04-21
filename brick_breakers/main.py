@@ -29,6 +29,14 @@ for row in range(2, 3):
 paddle = pygame.Rect(0, height-20, 120, 20)
 ball = pygame.Rect(width/2-10, height/2-10, 20, 20)
 
+def updateScore():
+    with open("brick_breakers/score.txt", "r") as file:
+        max_score = file.read()
+        if score > int(max_score):
+            with open("brick_breakers/score.txt", "w") as file:
+                file.write(str(score))
+
+
 def collision():
     global velx, vely, rects, score
     
@@ -45,12 +53,12 @@ def collision():
                 velx *= -1
             vely *= -1
             score += 1
-            print(score)
             rects.remove(rect)
         
 
 clock = pygame.time.Clock()
 running = True
+
 while running:
     # clock.tick(180)
     score_text = font.render(f"Score: {score}", True, (255, 255, 255))
@@ -83,6 +91,7 @@ while running:
     if len(rects) == 0:
         screen.blit(winStatement, winStatement_rect)
         velx, vely = 0, 0
+        updateScore()
     
     # pygame.draw.rect(screen, (255, 0, 0), ball, 1)
     pygame.display.flip()

@@ -1,4 +1,5 @@
 import pygame
+import time
 
 pygame.init()
 
@@ -18,7 +19,7 @@ winStatement = pygame.transform.scale(pygame.image.load('brick_breakers/Assets/w
 winStatement_rect = winStatement.get_rect(topleft = (width/2 - 231, 305))
 
 
-# rect = pygame.Rect(0, 0, 118, 30)
+# rect = pygame.Rect(0, 0, 118, 30) rectangle
 brick = pygame.transform.scale(pygame.image.load("brick_breakers/Assets/brick.jpg"), (118, 40))
 rects = []
 for row in range(2, 5):

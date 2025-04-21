@@ -8,9 +8,9 @@ screen = pygame.display.set_mode((width, height))
 
 ballx = width/2
 bally = height/2
-paddlevel = 10
-velx = 5
-vely = 5
+paddlevel = 13
+velx = 10
+vely = 10
 run = False
 font = pygame.font.SysFont('Arial', 30)
 score = 0
@@ -64,7 +64,7 @@ clock = pygame.time.Clock()
 running = True
 
 while running:
-    clock.tick(30)
+    clock.tick(60)
     score_text = font.render(f"Score: {score}", True, (255, 255, 255))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
